@@ -11,7 +11,24 @@
     <div class="form-body">
         <h1>STL Dimensions measurement tool.</h1>
         <p>Please upload stl file to get dimensions.</p>
-        <button class="upload-btn" id="upload-btn">Upload file</button>
+    
+        <input type="file" accept=".stl" id="input-btn"/>
+        <div id="results-block">
+            <h4>Extracted Results:</h4>
+            <p>Surface Area : <span id="surface-area"></span> units^2</p>
+            <p>Volume : <span id="volume"></span> units^3</p>
+            <p>Bounding Box parameters : </p>
+            <ul>
+                <li>Length: <span id="length"></span> units</li>
+                <li>Width: <span id="width"></span> units</li>
+                <li>Height: <span id="height"></span> units</li>
+            </ul>
+            <p>Bounding Cyclinder Parameters (round) : </p>
+            <ul>
+                <li>Length: <span id="length-cylinder"></span> units</li>
+                <li>Diameter: <span id="diameter-cylinder"></span> units</li>
+            </ul>
+        </div>
     </div>
     <script src="app.js"></script>
 </body>
