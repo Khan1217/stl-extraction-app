@@ -1,19 +1,28 @@
 from flask import Flask,request
 from flask_restful import Resource, Api
+from flask_cors import CORS
 import trimesh
+import base64
+import io
 app = Flask(__name__)
+CORS(app)
 api = Api(app)
+
+
 
 class task (Resource):
 
-    def post (self, name):
-        data = request.get_json()
-        mesh = trimesh.load('turbine_optimized.stl')
+    def post (self):
+        mesh = trimesh.load(io.BytesIO(request.data),"stl")
         volume = mesh.volume
+        print(volume)
         surface_area = mesh.area
-        bounding_box_parameters = mesh.bounding_box.extents
-        bounding_cylinder_parameters = mesh.bounding_cylinder.extents
-        return {"bounding_box" : bounding_box_parameters, "bounding_cylinder": bounding_cylinder_parameters, "volume":volume , "surface_area":surface_area}
+        width, length , height  = mesh.bounding_box.extents
+
+        length_of_cylinder = height
+        diameter_of_bounding_cylinder = max (width, length)
+
+        return {"volume":volume,"surface_area":surface_area,"length":length,"width":width,"height" :height , "length_of_cylinder":length_of_cylinder, "diameter_of_cylinder":diameter_of_bounding_cylinder}
 
 
 
@@ -23,5 +32,5 @@ class task (Resource):
 
 
 
-api.add_resource(task,'/stl_file/<int:name>')
+api.add_resource(task,'/stl_file')
 app.run(port= 5000,debug=True)
